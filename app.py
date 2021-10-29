@@ -26,6 +26,19 @@ def list_logs():
     return json.dumps(response, default=json_util.default)
 
 
+@app.route("/covidlogs/list/searches", methods=['GET'])
+def count_searches():
+    response = covidlogs_collection.aggregate(
+        [{
+            "$group":
+            {"_id": "$country",
+             "total": {"$sum": 1}
+             }}
+         ])
+    res = [log for log in response]
+    return json.dumps(res, default=json_util.default)
+
+
 @app.route("/covidlogs/add_log", methods=['POST'])
 def post_log():
     data = request.json
