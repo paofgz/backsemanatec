@@ -31,5 +31,5 @@ def post_log():
     data = request.json
     date = str(datetime.now())
     covidlogs_collection.insert_one(
-        {"_id": str(uuid.uuid4()), "country": data["country"], "date": date})
+        {"_id": str(uuid.uuid4()), "country": data["country"], "confirmed": data["pos"], "deaths": data["death"], "search_date": date})
     return "Log created "
