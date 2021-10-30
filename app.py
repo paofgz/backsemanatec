@@ -12,6 +12,17 @@ from datetime import datetime
 app = Flask(__name__)
 CORS(app)
 
+
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers',
+                         'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods',
+                         'GET,PUT,POST,DELETE,OPTIONS')
+    return response
+
+
 CONNECTION_STRING = "mongodb+srv://paofgz:Bob,esponja0@cluster0.erpn5.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 client = pymongo.MongoClient(CONNECTION_STRING, ssl_cert_reqs=ssl.CERT_NONE)
 db = client.get_database('flask_mongodb_atlas')
