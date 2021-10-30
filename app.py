@@ -6,12 +6,11 @@ from bson import json_util
 import ssl
 import json
 import uuid
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 from datetime import datetime
 
 app = Flask(__name__)
 CORS(app)
-app.config['CORS_HEADERS'] = 'Content-Type'
 
 CONNECTION_STRING = "mongodb+srv://paofgz:Bob,esponja0@cluster0.erpn5.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 client = pymongo.MongoClient(CONNECTION_STRING, ssl_cert_reqs=ssl.CERT_NONE)
@@ -21,7 +20,6 @@ covidlogs_collection = pymongo.collection.Collection(
 
 
 @app.route("/covidlogs/list", methods=['GET'])
-@cross_origin()
 def list_logs():
     logs = covidlogs_collection.find()
     response = [log for log in logs]
@@ -29,7 +27,6 @@ def list_logs():
 
 
 @app.route("/covidlogs/list/searches", methods=['GET'])
-@cross_origin()
 def count_searches():
     response = covidlogs_collection.aggregate(
         [{
@@ -43,7 +40,6 @@ def count_searches():
 
 
 @app.route("/covidlogs/add_log", methods=['POST'])
-@cross_origin()
 def post_log():
     data = request.json
     date = str(datetime.now())
